@@ -88,7 +88,9 @@ export function useContent() {
 
 /* ---- auth ---- */
 
-export function useAuth() {
+const AuthContext = createContext(null)
+
+export function AuthProvider({ children }) {
   const [isAuthed, setIsAuthed] = useState(() => sessionStorage.getItem(SESSION_KEY) === '1')
 
   const login = (username, password) => {
@@ -105,7 +107,14 @@ export function useAuth() {
     setIsAuthed(false)
   }
 
-  return { isAuthed, login, logout }
+  const value = useMemo(() => ({ isAuthed, login, logout }), [isAuthed])
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+}
+
+export function useAuth() {
+  const ctx = useContext(AuthContext)
+  if (!ctx) throw new Error('useAuth must be used within an AuthProvider')
+  return ctx
 }
 
 export function getPalette(id) {
