@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trail Notes — A Landscape Blog</title>
+<style>
+  :root {
+    --pine: #1f3d2b;
+    --moss: #4a7c59;
+    --fern: #6f9e76;
+    --sage: #a8bfa0;
+    --sand: #e8dcc4;
+    --cream: #faf6ec;
+    --clay: #b5643a;
+    --sun: #e6b566;
+    --ink: #2b2b26;
+    --line: rgba(43, 43, 38, .14);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.7;
+  }
+
+  /* ===== Hero landscape ===== */
+  .hero {
+    position: relative;
+    height: 72vh;
+    min-height: 420px;
+    overflow: hidden;
+    background: linear-gradient(
+      180deg,
+      #9ec8e2 0%,
+      #cfe3ec 30%,
+      #f2e2c3 52%,
+      #d8c39a 62%,
+      #7a9b6d 72%,
+      #3e6447 88%,
+      #24422f 100%
+    );
+  }
+
+  .sun {
+    position: absolute;
+    top: 14%;
+    left: 18%;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ffe9b0 0%, var(--sun) 70%);
+    box-shadow: 0 0 60px 20px rgba(230, 181, 102, .45);
+  }
+
+  .mountain {
+    position: absolute;
+    bottom: 22%;
+    width: 0;
+    height: 0;
+    border-left: 260px solid transparent;
+    border-right: 260px solid transparent;
+    border-bottom: 180px solid #5d7f62;
+  }
+  .mountain::after {
+    content: '';
+    position: absolute;
+    top: 34px;
+    left: -120px;
+    width: 0; height: 0;
+    border-left: 120px solid transparent;
+    border-right: 120px solid transparent;
+    border-bottom: 150px solid rgba(255,255,255,.35);
+  }
+  .mountain.back {
+    border-bottom-color: #708f74;
+    bottom: 20%;
+  }
+  .m-1 { left: -60px; }
+  .m-2 { right: -40px; border-bottom-color: #547458; }
+  .m-3 { left: 38%; bottom: 18%; border-left-width: 320px; border-right-width: 320px; }
+
+  .ridge {
+    position: absolute;
+    bottom: 20%;
+    left: 0; right: 0;
+    height: 40px;
+    background: #4a6e51;
+    clip-path: polygon(0 100%, 0 45%, 10% 20%, 20% 55%, 32% 10%, 45% 50%, 58% 25%, 70% 60%, 82% 15%, 92% 45%, 100% 30%, 100% 100%);
+  }
+
+  .tree {
+    position: absolute;
+    bottom: 12%;
+    width: 0; height: 0;
+    border-left: 22px solid transparent;
+    border-right: 22px solid transparent;
+    border-bottom: 70px solid #1f3d2b;
+  }
+  .tree::before {
+    content: '';
+    position: absolute;
+    bottom: -14px; left: -4px;
+    width: 8px; height: 16px;
+    background: #33291c;
+  }
+  .t-1 { left: 8%; transform: scale(1.1); }
+  .t-2 { left: 30%; }
+  .t-3 { right: 14%; transform: scale(1.3); }
+  .t-4 { right: 34%; transform: scale(.8); }
+
+  .hero .title {
+    position: absolute;
+    bottom: 26%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: var(--cream);
+    text-shadow: 0 2px 18px rgba(30, 50, 35, .55);
+    z-index: 5;
+    padding: 0 20px;
+    max-width: 860px;
+  }
+  .hero .title h1 {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    letter-spacing: .5px;
+    font-weight: 400;
+  }
+  .hero .title .meta {
+    margin-top: 14px;
+    font-size: .95rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #f2e8d0;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .wave {
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    z-index: 4;
+  }
+
+  /* ===== Layout ===== */
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 24px 90px;
+  }
+
+  .lead {
+    font-size: 1.25rem;
+    color: var(--pine);
+    border-left: 4px solid var(--clay);
+    padding-left: 18px;
+    margin-bottom: 38px;
+    font-style: italic;
+  }
+
+  .wrap p { margin-bottom: 24px; }
+
+  .wrap h2 {
+    font-size: 1.6rem;
+    color: var(--pine);
+    margin: 48px 0 14px;
+    font-weight: 400;
+    letter-spacing: .3px;
+  }
+
+  .wrap h2::before {
+    content: '◆';
+    color: var(--clay);
+    font-size: .8em;
+    margin-right: 10px;
+    vertical-align: 2px;
+  }
+
+  .pullquote {
+    margin: 40px 0;
+    padding: 26px 28px;
+    background: var(--sand);
+    border-radius: 12px;
+    font-size: 1.35rem;
+    font-style: italic;
+    text-align: center;
+    color: var(--pine);
+    position: relative;
+  }
+  .pullquote::before {
+    content: '“';
+    position: absolute;
+    top: -22px; left: 18px;
+    font-size: 4rem;
+    color: var(--clay);
+  }
+
+  figure {
+    margin: 36px 0;
+  }
+  figure .art {
+    height: 300px;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #9ec8e2, #f2e2c3 45%, #3e6447 90%);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(43,43,38,.12);
+  }
+  figure .art .mini-sun {
+    position: absolute; top: 15%; right: 18%;
+    width: 46px; height: 46px; border-radius: 50%;
+    background: radial-gradient(circle, #fff6d8, var(--sun));
+  }
+  figure .art .lake {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 34%;
+    background: linear-gradient(180deg, #8fb7c9, #5f8da3);
+  }
+  figure .art .lake::after {
+    content: '';
+    position: absolute; top: 12px; left: 0; right: 0; height: 1px;
+    background: rgba(255,255,255,.5);
+    box-shadow: 0 8px 0 rgba(255,255,255,.3);
+  }
+  figure .art .peak {
+    position: absolute; top: 28%; left: 12%;
+    width: 0; height: 0;
+    border-left: 130px solid transparent;
+    border-right: 130px solid transparent;
+    border-bottom: 120px solid #6b8d70;
+  }
+  figure .art .peak::before {
+    content: '';
+    position: absolute; top: 20px; left: -66px;
+    width: 0; height: 0;
+    border-left: 66px solid transparent;
+    border-right: 66px solid transparent;
+    border-bottom: 100px solid rgba(255,255,255,.5);
+  }
+  figure figcaption {
+    margin-top: 10px;
+    font-size: .85rem;
+    color: #6b6b5e;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: .5px;
+  }
+
+  blockquote {
+    margin: 36px 0;
+    padding: 18px 26px;
+    border-left: 4px solid var(--fern);
+    background: #f1eee1;
+    font-style: italic;
+    color: #3c5238;
+    border-radius: 0 10px 10px 0;
+  }
+
+  ul.trail {
+    margin: 0 0 24px 22px;
+  }
+  ul.trail li { margin-bottom: 10px; }
+  ul.trail li::marker { color: var(--clay); }
+
+  .tags {
+    margin-top: 48px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+  .tag {
+    display: inline-block;
+    background: var(--sage);
+    color: #23402c;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin: 4px 6px 4px 0;
+    font-size: .82rem;
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: .5px;
+  }
+
+  .author-box {
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--sand);
+    padding: 22px 24px;
+    border-radius: 14px;
+  }
+  .author-box .avatar {
+    width: 62px; height: 62px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #d9a05b, #7a4f2d);
+    flex-shrink: 0;
+    position: relative;
+  }
+  .author-box .avatar::after {
+    content: '';
+    position: absolute; bottom: 10px; left: 16px;
+    width: 30px; height: 26px;
+    border-radius: 50%;
+    background: #e8dcc4;
+  }
+  .author-box strong { color: var(--pine); }
+  .author-box small { display: block; color: #6b6b5e; font-family: Arial, Helvetica, sans-serif; }
+
+  footer {
+    text-align: center;
+    padding: 26px;
+    color: #7c7c6c;
+    font-size: .85rem;
+    font-family: Arial, Helvetica, sans-serif;
+    border-top: 1px solid var(--line);
+    background: #f3efe2;
+  }
+
+  @media (max-width: 600px) {
+    .mountain { transform: scale(.7); }
+    .m-3 { left: 20%; }
+    .hero { height: 60vh; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Hero Landscape ===== -->
+<header class="hero">
+  <div class="sun"></div>
+  <div class="mountain back m-1"></div>
+  <div class="mountain m-2"></div>
+  <div class="mountain m-3"></div>
+  <div class="ridge"></div>
+  <div class="tree t-1"></div>
+  <div class="tree t-2"></div>
+  <div class="tree t-3"></div>
+  <div class="tree t-4"></div>
+  <div class="title">
+    <h1>Five Days in the High Sierra</h1>
+    <div class="meta">Trail Notes · August 11, 2026 · 6 min read</div>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" style="width:100%;height:90px;">
+    <path d="M0,60 C240,110 480,10 720,50 C960,90 1200,20 1440,55 L1440,120 L0,120 Z" fill="#faf6ec"></path>
+  </svg>
+</header>
+
+<div class="wrap">
+
+  <p class="lead">The trailhead empties into a valley that smells of pine sap and cold granite. By the time the first switchback appears, the city has already forgotten us.</p>
+
+  <p>Every landscape has a rhythm if you sit still long enough to hear it. For five days I walked the Sierra crest between Onion Valley and the Kings River, and the mountains repaid the effort with a weather of moods: mornings of amber light, afternoons of thunder, evenings when the sky went the color of a bruise and the wind smelled of rain that never came.</p>
+
+  <p>The plan was simple — carry less than a third of my body weight, walk when the sun was low, and camp near water. What the plan never accounted for was how the place would rearrange my sense of time. A mile on a map is one thing; a mile of talus and deadfall is an entirely different country.</p>
+
+  <h2>Camp One: The Pine Bench</h2>
+  <p>The first night we slept beneath a lodgepole pine that had been split by lightning sometime in the last century. Its charred half stood like a monument, and we set the tent in its shadow, reasoning that lightning rarely strikes the same tree twice — a folklore insurance policy that felt thin around 2 a.m., when the wind picked up and every crack of a branch read as a strike.</p>
+
+  <div class="pullquote">The wilderness doesn't test your strength. It tests your willingness to keep walking after you've already been shown how small you are.</div>
+
+  <h2>Timberline and Beyond</h2>
+  <p>Above nine thousand feet, the trees thin out and the ground turns to gardens of cushion plants — moss campion, sky pilot, paintbrush burning red against the gravel. This is the country the maps render as empty. It is not empty. It is simply busy with small lives that don't care to be found.</p>
+
+  <figure>
+    <div class="art">
+      <div class="mini-sun"></div>
+      <div class="peak"></div>
+      <div class="lake"></div>
+    </div>
+    <figcaption>Alpenglow over the ridge — a scene the camera never quite captures</figcaption>
+  </figure>
+
+  <p>We crossed the pass at noon, and the wind on the far side hit like an open door. Below us, a basin of lakes arranged themselves like a staircase of mirrors, each one reflecting a slightly paler sky. It took an hour to descend what took three to climb, and that arithmetic — steep up, easy down — felt like a small lesson in how grief and joy both pass through a body.</p>
+
+  <blockquote>Notes from the field journal, day three: ate lunch with my back against a sun-warmed boulder, watched a Clark's nutcracker steal a cracker, and understood, briefly, the appeal of owning nothing but a good jacket and a route.</blockquote>
+
+  <h2>What I Carried Home</h2>
+  <ul class="trail">
+    <li>A blister that healed into a badge</li>
+    <li>Three hundred photos of which the good ones were all taken at golden hour</li>
+    <li>A belief that the best seats in the house are unpaid</li>
+    <li>The correct way to hang a bear bag (finally)</li>
+  </ul>
+
+  <p>The last morning we broke camp before light and walked out under a sky the color of old silver. The parking lot, when it finally appeared, smelled like exhaust and possibilities. I stood at the tailgate for a long minute, halfway to putting the boots away, halfway to turning around.</p>
+
+  <p>The boots are still in the back of the car, actually. Just in case the season holds.</p>
+
+  <div class="tags">
+    <span class="tag">#hiking</span>
+    <span class="tag">#sierra</span>
+    <span class="tag">#backpacking</span>
+    <span class="tag">#landscape</span>
+  </div>
+
+  <div class="author-box">
+    <div class="avatar"></div>
+    <div>
+      <strong>Mara Ellison</strong>
+      <small>Writer and weekend wanderer · Field notes from wherever the dirt ends</small>
+    </div>
+  </div>
+
+</div>
+
+<footer>Trail Notes · A demo landscape blog · Built with an afternoon and a horizon</footer>
+
+</body>
+</html>
